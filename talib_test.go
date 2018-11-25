@@ -31,14 +31,14 @@ func TestMacd(t *testing.T) {
 	expectedFast := []float64{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}
 	expectedSlow := []float64{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7}
 	expectedSignal := []float64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-	if !reflect.DeepEqual(expectedFast, fast) {
-		t.Errorf("Expected %#v got %#v.", expectedFast, fast)
+	if !reflect.DeepEqual(expectedFast, fast[33:]) {
+		t.Errorf("Expected %#v got %#v.", expectedFast, fast[33:])
 	}
-	if !reflect.DeepEqual(expectedSlow, slow) {
-		t.Errorf("Expected %#v got %#v.", expectedSlow, slow)
+	if !reflect.DeepEqual(expectedSlow, slow[33:]) {
+		t.Errorf("Expected %#v got %#v.", expectedSlow, slow[33:])
 	}
-	if !reflect.DeepEqual(expectedSignal, signal) {
-		t.Errorf("Expected %#v got %#v.", expectedSignal, signal)
+	if !reflect.DeepEqual(expectedSignal, signal[33:]) {
+		t.Errorf("Expected %#v got %#v.", expectedSignal, signal[33:])
 	}
 }
 
