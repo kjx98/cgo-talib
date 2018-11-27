@@ -164,8 +164,9 @@ func Apo(real []float64, fastPeriod, slowPeriod, mAType int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_APO(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(fastPeriod), C.int(slowPeriod), C.TA_MAType(mAType), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_APO_Lookback(C.int(fastPeriod),C.int(slowPeriod),C.TA_MAType(mAType))
+	C.TA_APO(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(fastPeriod), C.int(slowPeriod), C.TA_MAType(mAType), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*AroOn - Aroon
@@ -1579,8 +1580,9 @@ func HtDcPeriod(real []float64) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_HT_DCPERIOD(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_HT_DCPERIOD_Lookback()
+	C.TA_HT_DCPERIOD(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*HtDcPhase - Hilbert Transform - Dominant Cycle Phase
@@ -1610,8 +1612,9 @@ func HtPhasor(real []float64) ([]float64, []float64) {
 	var outNBElement C.int
 	outInPhase := make([]float64, len(real))
 	outQuadrature := make([]float64, len(real))
-	C.TA_HT_PHASOR(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outInPhase[0])), (*C.double)(unsafe.Pointer(&outQuadrature[0])))
-	return outInPhase[:outNBElement], outQuadrature[:outNBElement]
+	lb := C.TA_HT_PHASOR_Lookback()
+	C.TA_HT_PHASOR(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outInPhase[lb])), (*C.double)(unsafe.Pointer(&outQuadrature[lb])))
+	return outInPhase, outQuadrature
 }
 
 /*HtSine - Hilbert Transform - SineWave
@@ -1626,8 +1629,9 @@ func HtSine(real []float64) ([]float64, []float64) {
 	var outNBElement C.int
 	outSine := make([]float64, len(real))
 	outLeadSine := make([]float64, len(real))
-	C.TA_HT_SINE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outSine[0])), (*C.double)(unsafe.Pointer(&outLeadSine[0])))
-	return outSine[:outNBElement], outLeadSine[:outNBElement]
+	lb := C.TA_HT_SINE_Lookback()
+	C.TA_HT_SINE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outSine[lb])), (*C.double)(unsafe.Pointer(&outLeadSine[lb])))
+	return outSine, outLeadSine
 }
 
 /*HtTrendLine - Hilbert Transform - Instantaneous Trendline
@@ -1641,8 +1645,9 @@ func HtTrendLine(real []float64) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_HT_TRENDLINE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_HT_TRENDLINE_Lookback()
+	C.TA_HT_TRENDLINE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*HtTrendMode - Hilbert Transform - Trend vs Cycle Mode
@@ -1656,8 +1661,9 @@ func HtTrendMode(real []float64) []int32 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outInteger := make([]int32, len(real))
-	C.TA_HT_TRENDMODE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[0])))
-	return outInteger[:outNBElement]
+	lb := C.TA_HT_TRENDMODE_Lookback()
+	C.TA_HT_TRENDMODE(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[lb])))
+	return outInteger
 }
 
 /*Kama - Kaufman Adaptive Moving Average
@@ -2024,8 +2030,9 @@ func Max(real []float64, timePeriod int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_MAX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_MAX_Lookback(C.int(timePeriod))
+	C.TA_MAX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*MaxIndex - Index of highest value over a specified period
@@ -2047,8 +2054,9 @@ func MaxIndex(real []float64, timePeriod int32) []int32 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outInteger := make([]int32, len(real))
-	C.TA_MAXINDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[0])))
-	return outInteger[:outNBElement]
+	lb := C.TA_MAXINDEX_Lookback(C.int(timePeriod))
+	C.TA_MAXINDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[lb])))
+	return outInteger
 }
 
 /*MedPrice - Median Price
@@ -2133,8 +2141,9 @@ func MidPrice(high, low []float64, timePeriod int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(high))
-	C.TA_MIDPRICE(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_MIDPRICE_Lookback(C.int(timePeriod))
+	C.TA_MIDPRICE(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*Min - Lowest value over a specified period
@@ -2156,8 +2165,9 @@ func Min(real []float64, timePeriod int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_MIN(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_MIN_Lookback(C.int(timePeriod))
+	C.TA_MIN(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*MinIndex - Index of lowest value over a specified period
@@ -2179,8 +2189,9 @@ func MinIndex(real []float64, timePeriod int32) []int32 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outInteger := make([]int32, len(real))
-	C.TA_MININDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[0])))
-	return outInteger[:outNBElement]
+	lb := C.TA_MININDEX_Lookback(C.int(timePeriod))
+	C.TA_MININDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outInteger[lb])))
+	return outInteger
 }
 
 /*MinMax - Lowest and highest values over a specified period
@@ -2203,8 +2214,9 @@ func MinMax(real []float64, timePeriod int32) ([]float64, []float64) {
 	var outNBElement C.int
 	outMin := make([]float64, len(real))
 	outMax := make([]float64, len(real))
-	C.TA_MINMAX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outMin[0])), (*C.double)(unsafe.Pointer(&outMax[0])))
-	return outMin[:outNBElement], outMax[:outNBElement]
+	lb := C.TA_MINMAX_Lookback(C.int(timePeriod))
+	C.TA_MINMAX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outMin[lb])), (*C.double)(unsafe.Pointer(&outMax[lb])))
+	return outMin, outMax
 }
 
 /*MinMaxIndex - Indexes of lowest and highest values over a specified period
@@ -2227,8 +2239,9 @@ func MinMaxIndex(real []float64, timePeriod int32) ([]int32, []int32) {
 	var outNBElement C.int
 	outMinIdx := make([]int32, len(real))
 	outMaxIdx := make([]int32, len(real))
-	C.TA_MINMAXINDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outMinIdx[0])), (*C.int)(unsafe.Pointer(&outMaxIdx[0])))
-	return outMinIdx[:outNBElement], outMaxIdx[:outNBElement]
+	lb := C.TA_MINMAXINDEX_Lookback(C.int(timePeriod))
+	C.TA_MINMAXINDEX(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.int)(unsafe.Pointer(&outMinIdx[lb])), (*C.int)(unsafe.Pointer(&outMaxIdx[lb])))
+	return outMinIdx, outMaxIdx
 }
 
 /*MinusDi - Minus Directional Indicator
@@ -2274,8 +2287,9 @@ func MinusDm(high, low []float64, timePeriod int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(high))
-	C.TA_MINUS_DM(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_MINUS_DM_Lookback(C.int(timePeriod))
+	C.TA_MINUS_DM(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*Mom - Momentum
@@ -2579,8 +2593,9 @@ func Sar(high, low []float64, acceleration, maximum float64) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(high))
-	C.TA_SAR(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.double(acceleration), C.double(maximum), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_SAR_Lookback(C.double(acceleration), C.double(maximum))
+	C.TA_SAR(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.double(acceleration), C.double(maximum), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*SarExt - Parabolic SAR - Extended
@@ -2630,8 +2645,9 @@ func SarExt(high, low []float64, startValue, offsetOnReverse, accelerationInitLo
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(high))
-	C.TA_SAREXT(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.double(startValue), C.double(offsetOnReverse), C.double(accelerationInitLong), C.double(accelerationLong), C.double(accelerationMaxLong), C.double(accelerationInitShort), C.double(accelerationShort), C.double(accelerationMaxShort), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	//lb := C.TA_SAREXT_Lookback()
+	C.TA_SAREXT(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), C.double(startValue), C.double(offsetOnReverse), C.double(accelerationInitLong), C.double(accelerationLong), C.double(accelerationMaxLong), C.double(accelerationInitShort), C.double(accelerationShort), C.double(accelerationMaxShort), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[1])))
+	return outReal
 }
 
 /*Sin - Vector Trigonometric Sin
@@ -2876,8 +2892,9 @@ func Sum(real []float64, timePeriod int32) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(real))
-	C.TA_SUM(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_SUM_Lookback(C.int(timePeriod))
+	C.TA_SUM(0, C.int(len(real)-1), (*C.double)(unsafe.Pointer(&real[0])), C.int(timePeriod), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*T3 - Triple Exponential Moving Average (T3)
@@ -2973,8 +2990,9 @@ func Trange(high, low, close []float64) []float64 {
 	var outBegIdx C.int
 	var outNBElement C.int
 	outReal := make([]float64, len(high))
-	C.TA_TRANGE(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), (*C.double)(unsafe.Pointer(&close[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[0])))
-	return outReal[:outNBElement]
+	lb := C.TA_TRANGE_Lookback()
+	C.TA_TRANGE(0, C.int(len(high)-1), (*C.double)(unsafe.Pointer(&high[0])), (*C.double)(unsafe.Pointer(&low[0])), (*C.double)(unsafe.Pointer(&close[0])), &outBegIdx, &outNBElement, (*C.double)(unsafe.Pointer(&outReal[lb])))
+	return outReal
 }
 
 /*TriMa - Triangular Moving Average
