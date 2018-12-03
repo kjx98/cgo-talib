@@ -3,5 +3,19 @@ language: go
 go:
   - 1.9
 
+env:
+  global:
+    - DEPS_DIR=$HOME/dependencies
+  matrix:
+    - WITH_TA_LIBRARY=yes
+      CFLAGS=-I$DEPS_DIR/include
+      LD_LIBRARY_PATH=$DEPS_DIR/lib
+      LDFLAGS=-L$DEPS_DIR/lib -lta_lib
+
+install:
+  - if [ $WITH_TA_LIBRARY = "yes" ]; then
+      ./build_talib_from_source.bash $DEPS_DIR;
+    fi
+
 script:
     - go test -v ./...
