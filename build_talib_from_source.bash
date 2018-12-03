@@ -21,6 +21,6 @@ pushd $DEPS_DIR/tmp
 tar -zxvf $TA_LIB_TGZ
 popd
 pushd $DEPS_DIR/tmp/ta-lib
-./configure --prefix=$DEPS_DIR
+LDFLAGS=-lm ./configure --prefix=$DEPS_DIR
 make install
 popd
