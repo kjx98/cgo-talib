@@ -30,12 +30,12 @@ func main() {
 Install the dependencies then run
 
 ```
-$ go install github.com/kjx98/talib
+$ go install github.com/kjx98/cgo-talib
 ```
 
 ### Dependencies
 
-To use TA-Lib for python, you need to have the
+To use TA-Lib for go, you need to have the
 [TA-Lib](http://ta-lib.org/hdr_dw.html) already installed:
 
 ##### Mac OS X
