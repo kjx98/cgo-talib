@@ -53,30 +53,11 @@ func go_equals(t *testing.T, cgoResult []float64, goResult []float64) {
 	equals(t, len(goResult), len(cgoResult))
 
 	for i := 0; i < len(goResult); i++ {
-
-		if (goResult[i] < -0.00000000000001) || (goResult[i] < 0.00000000000001) {
-			goResult[i] = 0.0
-		}
-		if (cgoResult[i] < -0.00000000000001) || (cgoResult[i] < 0.00000000000001) {
-			cgoResult[i] = 0.0
-		}
-
-		var s1, s2 string
-		if (goResult[i] > -1000000) && (goResult[i] < 1000000) {
-			s1 = fmt.Sprintf("%.6f", goResult[i])
-		} else {
-			s1 = fmt.Sprintf("%.1f", round(goResult[i])) // reduce precision for very large numbers
-		}
-
-		if (cgoResult[i] > -1000000) && (cgoResult[i] < 1000000) {
-			s2 = fmt.Sprintf("%.6f", cgoResult[i])
-		} else {
-			s2 = fmt.Sprintf("%.1f", round(cgoResult[i])) // reduce precision for very large numbers
-		}
-		//equals(t, s1, s2)
-		if s1[:len(s1)-2] != s2[:len(s2)-2] {
+		exp := goResult[i]
+		act := cgoResult[i]
+		if math.Abs(act-exp)*1e5 > 0.6 {
 			_, file, line, _ := runtime.Caller(1)
-			fmt.Printf("%s:%d:\n\tgo!: %#v\n\tcgo!: %#v\n", filepath.Base(file), line, s1, s2)
+			fmt.Printf("%s:%d:\n\tcgo!: %#v\n\tgo!: %#v\n", filepath.Base(file), line, act, exp)
 			t.FailNow()
 		}
 
